@@ -1,2 +1,2 @@
-# ServicoDeBusca
-Sistema de busca de locais, produtos e serviços
+# Serviço De Busca
+Sistema de busca de locais, produtos e serviço 
