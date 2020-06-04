@@ -47,7 +47,22 @@ def find_products(request, nome):
         if url == '':
             url = list.span.get_text()
 
-        produto1 = Esqueleto(titulo, url, "")
+
+        for img in soup.find_all('img', class_ = "nm-product-img"):
+            temp = img.get('src')
+            if temp[:1] == "/":
+                fotinho = temp
+
+            else:
+                fotinho = temp 
+
+
+        ## busca o preço dentro de 'a'.div='nm-offer'(div.'nm-price-container')
+        preco = soup.find_all('nm-price-container')
+        if preco == '':
+            preco = list.span.get_text()
+
+        produto1 = Esqueleto(titulo, url, preco, fotinho)
         lista.append(produto1)
 
 
@@ -60,8 +75,17 @@ def find_products(request, nome):
     for produto in lista:
         print(produto.titulo)
         print(produto.link)
+        print(produto.imagem)
+        print(produto.foto)
         print("\n")  
     print("---------------------")
 
 
     return render(request, 'produtosFiltrados.html', {'lista': lista})
+    ##poto = soup.find_all('img', class_ = "nm-product-img")
+     ##   fotinho = poto.find_all('div', class_ = "src")
+     ##   if fotinho == '':
+      ##      fotinho == list.span.get_text()
+
+     ##   produto1 = Esqueleto(titulo, url, preco, fotinho)
+      ##  lista.append(produto1)
