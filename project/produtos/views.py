@@ -3,7 +3,13 @@ from .models import Produto, Esqueleto
 from .forms import ProductForm
 import requests
 from bs4 import BeautifulSoup
-
+import os, ssl
+import json
+import jsonpickle
+from json import JSONEncoder
+if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
+getattr(ssl, '_create_unverified_context', None)):
+    ssl._create_default_https_context = ssl._create_unverified_context
 # Create your views here.
 
 def list_products(request):
@@ -23,7 +29,6 @@ def find_products(request, nome):
 
     url = 'https://busca.magazineluiza.com.br/busca?q=' + nome
 
-
     response = requests.get(url, headers=headerss)
 
     print(response.text)
@@ -31,12 +36,15 @@ def find_products(request, nome):
     soup = BeautifulSoup(response.content, features="lxml")
 
     l = soup.find_all('li', class_="nm-product-item")
+ 
+    imagelist = soup.find_all('img', class_ = "nm-product-img")
+
+    imgcount = 0
 
     lista = []
 
     for list in l:
-        
-        
+                
 
         titulo = list.a.get('title')
         if titulo == '':
@@ -47,24 +55,27 @@ def find_products(request, nome):
         if url == '':
             url = list.span.get_text()
 
-
-        for img in soup.find_all('img', class_ = "nm-product-img"):
-            temp = img.get('src')
-            if temp[:1] == "/":
-                fotinho = temp
-
-            else:
-                fotinho = temp 
-
-
+            
         ## busca o preço dentro de 'a'.div='nm-offer'(div.'nm-price-container')
-        preco = soup.find_all('nm-price-container')
-        if preco == '':
-            preco = list.span.get_text()
+        precotemp = list.a.get('data-product')
+
+        precotemp = jsonpickle.decode(precotemp)
+
+        preco = precotemp.get('price')
+
+
+        ## for percorre o hmtl e armazena na fotinho os links relativos a imagens    
+        img = imagelist[imgcount]
+        imgcount = imgcount + 1
+        temp = img.get('src')            
+        if temp[:1] == "/":
+             fotinho = temp
+
 
         produto1 = Esqueleto(titulo, url, preco, fotinho)
         lista.append(produto1)
-
+        
+        
 
 
     ##img = l[0].a.div.div
@@ -82,10 +93,3 @@ def find_products(request, nome):
 
 
     return render(request, 'produtosFiltrados.html', {'lista': lista})
-    ##poto = soup.find_all('img', class_ = "nm-product-img")
-     ##   fotinho = poto.find_all('div', class_ = "src")
-     ##   if fotinho == '':
-      ##      fotinho == list.span.get_text()
-
-     ##   produto1 = Esqueleto(titulo, url, preco, fotinho)
-      ##  lista.append(produto1)

@@ -11,9 +11,8 @@
     <ul>
         {% for list in lista %}
             <a href="{{ list.link }}">
-                <img src = "{{list.foto}}" alt="logo da Home Host" style="float:right;width:200px">
-             <li> {{ list.titulo }}</li>
-               
+                <img src="{{list.foto}}" alt="imagem do produto" style="float: left;">
+             <li>{{ list.titulo }}</li>           
             </a>
         {% endfor %}
     </ul>
