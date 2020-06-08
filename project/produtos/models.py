@@ -22,3 +22,8 @@ class Esqueleto():
 
     def __str__(self):
         return self.titulo
+
+
+
+
+#alteraçoes no produto e esqueleto, foram adicionados imagem(preço) e foto(imagem do produto) 
