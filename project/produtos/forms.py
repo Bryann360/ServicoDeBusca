@@ -8,3 +8,16 @@ class ProductForm(forms.ModelForm):
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class ProductDetailForm(forms.ModelForm):
+    class Meta:
+        model = Produto
+        fields = ['titulo', 'descricao', 'imagem', 'foto']
+        widgets = {
+            'titulo': forms.HiddenInput(),
+            'descricao': forms.HiddenInput(),
+            'imagem': forms.HiddenInput(),
+            'foto': forms.HiddenInput(),
+        }
+
+
