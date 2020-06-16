@@ -40,6 +40,17 @@ INSTALLED_APPS = [
     'produtos',
 ]
 
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+#STATIC_URL = 'templates/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "produtos/templates/static"),
+    # '/var/www/static/',
+)
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -119,3 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
