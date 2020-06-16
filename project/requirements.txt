@@ -1,4 +1,0 @@
-django
-pylint-django
-requests
-beautifulsoup4
